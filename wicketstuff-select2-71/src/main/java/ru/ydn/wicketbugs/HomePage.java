@@ -37,8 +37,10 @@ public class HomePage extends WebPage {
 			
 			@Override
 			public void query(String term, int page, Response<String> response) {
-				for (String string : allTags) {
-					if(string.startsWith(term)) response.add(string);
+				if(term!=null) {
+					for (String string : allTags) {
+						if(string.startsWith(term)) response.add(string);
+					}
 				}
 			}
 			
