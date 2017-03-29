@@ -1,0 +1,16 @@
+.button {
+  color: white;
+  display: inline-block;
+  font-weight: bold;
+  vertical-align: top;
+  border: solid blue 10px;
+  border-radius: 6px;
+  background-color: blue;
+  margin: 10px;
+}
+
+.button:hover {
+  background-color: green;
+  border: solid green 10px;
+  border-radius: 6px;
+}
