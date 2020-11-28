@@ -2,6 +2,7 @@ package org.orienteer;
 
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.Markup;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.util.tester.BaseWicketTester;
 import org.apache.wicket.util.tester.WicketTester;
@@ -42,6 +43,73 @@ public class TestHomePage
 		tester.startPage(page);
 
 		tester.assertRenderedPage(BaseWicketTester.StartComponentInPage.class);
+	}
+	
+	@Test
+	public void testStartPageByInstanceOfStartComponentInPageButWithStaticMarkup()
+	{
+		tester.getSession().invalidate();
+		BaseWicketTester.StartComponentInPage page = new BaseWicketTester.StartComponentInPage() {
+			private static final long serialVersionUID = 1L;
+
+			public org.apache.wicket.markup.IMarkupFragment getMarkup() {
+				return Markup.of("<html></html>");
+			};
+		};
+		tester.startPage(page);
+
+		tester.assertRenderedPage(BaseWicketTester.StartComponentInPage.class);
+	}
+	
+	@Test
+	public void testStartPageByInstanceOfAPageButWithStaticMarkup()
+	{
+		tester.getSession().invalidate();
+		HomePage page = new HomePage() {
+			public org.apache.wicket.markup.IMarkupFragment getMarkup() {
+				return Markup.of("<html></html>");
+			};
+		};
+		tester.startPage(page);
+
+		tester.assertRenderedPage(BaseWicketTester.StartComponentInPage.class);
+	}
+	
+	
+	@Test
+	public void testStartMarkupPageByInstance()
+	{
+		tester.getSession().invalidate();
+		tester.startPage(new MarkupPage());
+
+		tester.assertRenderedPage(MarkupPage.class);
+	}
+	
+	@Test
+	public void testStartStatefulPageByInstance()
+	{
+		tester.getSession().invalidate();
+		tester.startPage(new StatefulPage(Model.of("RANDOM")));
+
+		tester.assertRenderedPage(StatefulPage.class);
+	}
+	
+	@Test
+	public void testStartSimplePageByInstance()
+	{
+		tester.getSession().invalidate();
+		tester.startPage(new SimplePage());
+
+		tester.assertRenderedPage(SimplePage.class);
+	}
+	
+	@Test
+	public void testStartSimplePageByClass()
+	{
+		tester.getSession().invalidate();
+		tester.startPage(SimplePage.class);
+
+		tester.assertRenderedPage(SimplePage.class);
 	}
 	
 	@Test
