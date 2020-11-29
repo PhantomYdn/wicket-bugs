@@ -119,4 +119,13 @@ public class TestHomePage
 		HomePanel panel = new HomePanel("panel");
 		tester.startComponentInPage(panel);
 	}
+	
+	@Test
+	public void testLogoutPage() {
+		String username = "TESTUSERNAME";
+		LogoutPage page = new LogoutPage(Model.of(username));
+		tester.startPage(page);
+		tester.assertRenderedPage(LogoutPage.class);
+		tester.assertContains(username);
+	}
 }
