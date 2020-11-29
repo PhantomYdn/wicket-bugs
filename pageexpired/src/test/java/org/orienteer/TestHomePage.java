@@ -67,12 +67,12 @@ public class TestHomePage
 		tester.getSession().invalidate();
 		HomePage page = new HomePage() {
 			public org.apache.wicket.markup.IMarkupFragment getMarkup() {
-				return Markup.of("<html></html>");
+				return Markup.of("<html><span wicket:id=\"version\"></span></html>");
 			};
 		};
 		tester.startPage(page);
 
-		tester.assertRenderedPage(BaseWicketTester.StartComponentInPage.class);
+		tester.assertRenderedPage(HomePage.class);
 	}
 	
 	
