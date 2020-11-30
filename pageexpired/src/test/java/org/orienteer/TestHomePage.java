@@ -72,7 +72,7 @@ public class TestHomePage
 		signOut();
 		HomePage page = new HomePage() {
 			public org.apache.wicket.markup.IMarkupFragment getMarkup() {
-				return Markup.of("<html><span wicket:id=\"version\"></span></html>");
+				return Markup.of("<html><span wicket:id=\"version\"></span><a wicket:id=\"logout\">Logout</a></html>");
 			};
 		};
 		tester.startPage(page);
@@ -131,6 +131,14 @@ public class TestHomePage
 		tester.startPage(page);
 		tester.assertRenderedPage(LogoutPage.class);
 		tester.assertContains(username);
+	}
+	
+	@Test
+	public void testLogout2Page() {
+		tester.startPage(new HomePage());
+		tester.assertRenderedPage(HomePage.class);
+		tester.clickLink("logout");
+		tester.assertRenderedPage(LogoutPage.class);
 	}
 	
 	private void signIn() {
