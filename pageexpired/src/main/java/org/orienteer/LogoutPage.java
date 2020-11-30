@@ -14,7 +14,7 @@ public class LogoutPage extends WebPage {
 	@Override
 	protected void onRender() {
 		super.onRender();
-		getSession().invalidate(); //Use invalidate instead of signOut for simplicity
+		((AuthWebSession)getSession()).signOut();
 	}
 	
 	

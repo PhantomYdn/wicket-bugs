@@ -20,7 +20,10 @@ public class TestHomePage
 	@Test
 	public void testStartPageByClass()
 	{
-		tester.getSession().invalidate();
+		signIn();
+		tester.startPage(HomePage.class);
+		tester.assertRenderedPage(HomePage.class);
+		signOut();
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
 	}
@@ -28,16 +31,18 @@ public class TestHomePage
 	@Test
 	public void testStartPageByInstance()
 	{
-		tester.getSession().invalidate();
+		signIn();
 		tester.startPage(new HomePage());
-
+		tester.assertRenderedPage(HomePage.class);
+		signOut();
+		tester.startPage(new HomePage());
 		tester.assertRenderedPage(HomePage.class);
 	}
 	
 	@Test
 	public void testStartPageByInstanceOfStartComponentInPage()
 	{
-		tester.getSession().invalidate();
+		signOut();
 		BaseWicketTester.StartComponentInPage page = new BaseWicketTester.StartComponentInPage();
 		page.setMarkup(Markup.of("<html></html>"));
 		tester.startPage(page);
@@ -48,7 +53,7 @@ public class TestHomePage
 	@Test
 	public void testStartPageByInstanceOfStartComponentInPageButWithStaticMarkup()
 	{
-		tester.getSession().invalidate();
+		signOut();
 		BaseWicketTester.StartComponentInPage page = new BaseWicketTester.StartComponentInPage() {
 			private static final long serialVersionUID = 1L;
 
@@ -64,7 +69,7 @@ public class TestHomePage
 	@Test
 	public void testStartPageByInstanceOfAPageButWithStaticMarkup()
 	{
-		tester.getSession().invalidate();
+		signOut();
 		HomePage page = new HomePage() {
 			public org.apache.wicket.markup.IMarkupFragment getMarkup() {
 				return Markup.of("<html><span wicket:id=\"version\"></span></html>");
@@ -79,7 +84,7 @@ public class TestHomePage
 	@Test
 	public void testStartMarkupPageByInstance()
 	{
-		tester.getSession().invalidate();
+		signOut();
 		tester.startPage(new MarkupPage());
 
 		tester.assertRenderedPage(MarkupPage.class);
@@ -88,7 +93,7 @@ public class TestHomePage
 	@Test
 	public void testStartStatefulPageByInstance()
 	{
-		tester.getSession().invalidate();
+		signOut();
 		tester.startPage(new StatefulPage(Model.of("RANDOM")));
 
 		tester.assertRenderedPage(StatefulPage.class);
@@ -97,7 +102,7 @@ public class TestHomePage
 	@Test
 	public void testStartSimplePageByInstance()
 	{
-		tester.getSession().invalidate();
+		signOut();
 		tester.startPage(new SimplePage());
 
 		tester.assertRenderedPage(SimplePage.class);
@@ -106,7 +111,7 @@ public class TestHomePage
 	@Test
 	public void testStartSimplePageByClass()
 	{
-		tester.getSession().invalidate();
+		signOut();
 		tester.startPage(SimplePage.class);
 
 		tester.assertRenderedPage(SimplePage.class);
@@ -114,8 +119,7 @@ public class TestHomePage
 	
 	@Test
 	public void testStartComponentInPage() {
-		tester.getSession().invalidate();
-		System.out.println("RequestCycle ID:"+ RequestCycle.get().hashCode());
+		signOut();
 		HomePanel panel = new HomePanel("panel");
 		tester.startComponentInPage(panel);
 	}
@@ -127,5 +131,13 @@ public class TestHomePage
 		tester.startPage(page);
 		tester.assertRenderedPage(LogoutPage.class);
 		tester.assertContains(username);
+	}
+	
+	private void signIn() {
+		((AuthWebSession)tester.getSession()).signIn("admin", "admin");
+	}
+	
+	private void signOut() {
+		((AuthWebSession)tester.getSession()).signOut();
 	}
 }
